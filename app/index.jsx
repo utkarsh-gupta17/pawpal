@@ -1,8 +1,11 @@
-import { Link, useRootNavigationState } from "expo-router";
+import { useUser } from "@clerk/clerk-expo";
+import { Redirect, useRootNavigationState } from "expo-router";
 import { useEffect } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 export default function Index() {
+
+  const { user } = useUser();
 
   const rootNavigationState = useRootNavigationState();
 
@@ -16,17 +19,15 @@ export default function Index() {
     } 
   }
 
+  if(user){ 
+    console.log("User already logged in");
+  }
+
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Link href={'/login'}>
-        <Text style={{fontSize:70}}>Go to Login Screen</Text>
-      </Link>
+    <View style={{flex: 1}}>
+      {
+        user ? <Redirect href={'/(tabs)/home'}/> : <Redirect href={'/login'}/>
+      }
     </View>
   );
 }

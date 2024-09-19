@@ -1,40 +1,14 @@
 import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
-import { ClerkProvider, ClerkLoaded } from '@clerk/clerk-expo'
+import { ClerkProvider } from '@clerk/clerk-expo'
 import * as SecureStore from 'expo-secure-store'
+import { ActivityIndicator, View } from "react-native";
 
-
-
-const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
-
-const tokenCache = {
-  async getToken(key) {
-    try {
-      const item = await SecureStore.getItemAsync(key)
-      if (item) {
-        console.log(`${key} was used 🔐 \n`)
-      } else {
-        console.log('No values stored under key: ' + key)
-      }
-      return item
-    } catch (error) {
-      console.error('SecureStore get item error: ', error)
-      await SecureStore.deleteItemAsync(key)
-      return null
-    }
-  },
-  async saveToken(key, value) {
-    try {
-      return SecureStore.setItemAsync(key, value)
-    } catch (err) {
-      return
-    }
-  },
-}
 
 export default function RootLayout() {
 
-  useFonts({
+  
+  const [fontsLoaded] = useFonts({
     // inter fonts
     'inter': require('./../assets/fonts/Inter_18pt-Regular.ttf'),
     'inter-semibolditalic': require('./../assets/fonts/Inter_18pt-SemiBoldItalic.ttf'),
@@ -56,18 +30,59 @@ export default function RootLayout() {
     'roboto-bold': require('./../assets/fonts/Roboto-Bold.ttf'),
     // space mono regular fonts
     'normal':require('./../assets/fonts/SpaceMono-Regular.ttf'),
-  })
+  });
+
+  // If fonts are not loaded, show a loading spinner or some placeholder content
+  if (!fontsLoaded) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+
+  const tokenCache = {
+    async getToken(key) {
+      try {
+        const item = await SecureStore.getItemAsync(key)
+        if (item) {
+          console.log(`${key} was used 🔐 \n`)
+        } else {
+          console.log('No values stored under key: ' + key)
+        }
+        return item
+      } catch (error) {
+        console.error('SecureStore get item error: ', error)
+        await SecureStore.deleteItemAsync(key)
+        return null
+      }
+    },
+    async saveToken(key, value) {
+      try {
+        return SecureStore.setItemAsync(key, value)
+      } catch (err) {
+        return
+      }
+    },
+  }
+
+  const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
+  if (!publishableKey) {
+    throw new Error(
+      'Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env',
+    )
+  }
+
 
 
   return (
     <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
       <Stack>
-        <Stack.Screen name="index" />
-        <Stack.Screen name="login/index"
-          options = {{
-            headerShown:false,
-          }}
-          />
+        <Stack.Screen name="index" options = {{headerShown:false}} />
+        <Stack.Screen name="(tabs)" options = {{headerShown:false}} />
+        <Stack.Screen name="login/index" options = {{headerShown:false}} />
       </Stack>
     </ClerkProvider>
   );
