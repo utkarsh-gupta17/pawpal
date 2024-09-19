@@ -1,7 +1,21 @@
-import { Link } from "expo-router";
+import { Link, useRootNavigationState } from "expo-router";
+import { useEffect } from "react";
 import { Text, View } from "react-native";
 
 export default function Index() {
+
+  const rootNavigationState = useRootNavigationState();
+
+  useEffect(()=>{
+    CheckNavigationLoaded();
+  },[])
+
+  const CheckNavigationLoaded = ()=>{
+    if(!rootNavigationState.key){
+      return null;
+    } 
+  }
+
   return (
     <View
       style={{

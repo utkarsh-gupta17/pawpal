@@ -1,16 +1,51 @@
-import { View, Text, Image, StyleSheet, Pressable } from 'react-native'
-import React from 'react'
+import { View, Text, Image, StyleSheet, Pressable, Button } from 'react-native'
+import React, { useCallback } from 'react'
 import Colors from './../../constants/Colors'
+import * as WebBrowser from 'expo-web-browser'
+import { useOAuth } from '@clerk/clerk-expo'
+import * as Linking from 'expo-linking'
 
+export const useWarmUpBrowser = () => {
+  React.useEffect(() => {
+    // Warm up the android browser to improve UX
+    // https://docs.expo.dev/guides/authentication/#improving-user-experience
+    void WebBrowser.warmUpAsync()
+    return () => {
+      void WebBrowser.coolDownAsync()
+    }
+  }, [])
+}
 
-export default function index() {
+WebBrowser.maybeCompleteAuthSession()
+
+export default function LoginScreen() {
+
+  useWarmUpBrowser();
+
+  const { startOAuthFlow } = useOAuth({ strategy: 'oauth_google' });
+
+  const onPress = useCallback(async () => {
+    try {
+      const { createdSessionId, signIn, signUp, setActive } = await startOAuthFlow({
+        redirectUrl: Linking.createURL('/home', { scheme: 'myapp' }),
+      })
+
+      if (createdSessionId) {
+      } else {
+        // Use signIn or signUp for next steps such as MFA
+      }
+    } catch (err) {
+      console.error('OAuth error', err)
+    }
+  }, [])
+
   return (
     <View style={styles.bg}>
       <Image source={require('./../../assets/images/login.png')} style={styles.loginImage}/>
       <View style={styles.mainTextDiv}>
         <Text style={styles.mainText}>Ready to make a friend?</Text>
         <Text style={styles.mainSubText}>Let's adopt the pet which you like and make their life happy again</Text>
-        <Pressable style={styles.gotoBtn}>
+        <Pressable style={styles.gotoBtn} onPress={onPress}>
           <Text style={styles.gotoText}>Get Started</Text>
         </Pressable>
       </View>
