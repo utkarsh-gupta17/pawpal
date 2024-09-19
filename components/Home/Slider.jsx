@@ -16,7 +16,7 @@ const Slider = () => {
     setSliderList([]);
     const snapshot = await getDocs(collection(db,'Sliders'));
     snapshot.forEach((doc)=>{
-      console.log(doc.data());
+      // console.log(doc.data());
       setSliderList(sliderList=>[...sliderList,doc.data()]);
     })
   }
