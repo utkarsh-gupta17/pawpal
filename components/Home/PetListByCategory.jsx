@@ -2,6 +2,8 @@ import { FlatList, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Category from './Category'
 import { collection, getDocs, query, where } from 'firebase/firestore'
+import { db } from '../../config/FirebaseConfig'
+import PetListItem from './PetListItem'
 
 const PetListByCategory = () => {
 
@@ -26,13 +28,14 @@ const PetListByCategory = () => {
   }
 
   return (
-    <View>
+    <View style={{marginBottom:7}}>
       <Category category={(value)=>GetPetList(value)} />
       <FlatList
         data={petList}
         style={{
           marginTop:10,
         }}
+        showsHorizontalScrollIndicator={false}
         refreshing={loader}
         onRefresh={()=>GetPetList('Dogs')}
         horizontal={true}
