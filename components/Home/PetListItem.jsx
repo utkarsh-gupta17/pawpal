@@ -2,6 +2,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import Colors from '../../constants/Colors'
 import { useRouter } from 'expo-router';
+import MarkFav from '../MarkFav';
 
 const PetListItem = ({pet}) => {
 
@@ -13,6 +14,9 @@ const PetListItem = ({pet}) => {
       pathname:'/pet-details',
       params:pet,
     })}>
+      <View style={{position:'absolute',zIndex:10,right:10,top:10}}>
+        <MarkFav pet={pet} color={Colors.WHITE}/>
+      </View>
       <Image source={{uri:pet?.imageUrl}} style={styles.petImg} />
       <Text style={{ fontFamily:'poppins', fontSize:18 }}>{pet?.name}</Text>
       <View style={{display:'flex',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>

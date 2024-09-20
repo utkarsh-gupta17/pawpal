@@ -1,10 +1,12 @@
 import { Image, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Colors from '../../constants/Colors'
-import Ionicons from '@expo/vector-icons/Ionicons';
+import MarkFav from '../MarkFav';
 
 const PetInfo = ({pet}) => {
   
+  console.log("pet id::"+pet.id);
+
   return (
     <View>
       <Image source={{uri:pet.imageUrl}} style={styles.petImg}/>
@@ -14,7 +16,7 @@ const PetInfo = ({pet}) => {
           {/* <Text style={{fontFamily:'inter-bold',fontSize:27}}>{pet?.user.email}</Text> */}
           <Text style={{fontFamily:'inter',fontSize:13,color:Colors.GRAY}}>{pet?.address}</Text>
         </View>
-        <Ionicons name="heart-outline" size={30} color="red" />
+        <MarkFav pet={pet} />
       </View>
     </View>
   )
