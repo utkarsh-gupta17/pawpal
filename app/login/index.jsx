@@ -2,7 +2,7 @@ import { View, Text, Image, StyleSheet, Pressable, Button } from 'react-native'
 import React from 'react'
 import Colors from './../../constants/Colors'
 import * as WebBrowser from 'expo-web-browser'
-import { useOAuth } from '@clerk/clerk-expo'
+import { useOAuth,useAuth } from '@clerk/clerk-expo'
 import * as Linking from 'expo-linking'
 
 export const useWarmUpBrowser = () => {
@@ -40,7 +40,9 @@ export default function LoginScreen() {
     } catch (err) {
       console.error('OAuth error', err)
     }
-  }, [])
+  }, []);
+
+
 
   return (
     <View style={styles.bg}>

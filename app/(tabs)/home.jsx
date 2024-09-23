@@ -6,6 +6,7 @@ import PetListByCategory from '../../components/Home/PetListByCategory';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Colors from '../../constants/Colors';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { Link } from 'expo-router';
 
 const Home = () => {
   return (
@@ -33,14 +34,14 @@ const Home = () => {
         }}>Swipe</Text>
       </View>
       {/* List of Pets */}
-      <TouchableOpacity style={styles.addNewPet}>
+      <Link href={'/add-new-pet'} style={styles.addNewPet}>
         <MaterialIcons name="pets" size={24} color={Colors.PRIMARY} />
         <Text style={{
           fontFamily:'monteserrat-bold',
           fontSize:18,
           color:Colors.PRIMARY
         }}>Add New Pet</Text>
-      </TouchableOpacity>
+      </Link>
     </View>
   )
 }
@@ -55,6 +56,7 @@ const styles = StyleSheet.create({
     alignItems:'center',
     padding:20,
     marginTop:8,
+    textAlign:'center',
     backgroundColor:Colors.LIGHT_PRIMARY,
     borderWidth:1,
     borderColor:Colors.PRIMARY,

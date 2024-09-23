@@ -1,10 +1,24 @@
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
 import React from 'react'
-import {useUser} from '@clerk/clerk-expo'
+import {useAuth, useUser} from '@clerk/clerk-expo'
+import Colors from '../../constants/Colors';
 
 const Header = () => {
 
   const {user} = useUser();
+  const { signOut } = useAuth();
+
+
+  const onLogoutPress = async()=>{
+    try{
+      await signOut();
+      console.log("User Logged Out");
+    }
+    catch(e){
+      console.log("Logout Error",e);
+    }
+  }
+
 
   return (
     <View style={{
@@ -18,6 +32,9 @@ const Header = () => {
         <Text style={styles.userName}>{user?.fullName}</Text>
       </View>
       <Image source={{uri:user?.imageUrl}} style={styles.userImage} />
+      {/* <Pressable style={[styles.gotoBtn,{marginTop:20,backgroundColor:Colors.SECONDARY}]} onPress={onLogoutPress}> */}
+          {/* <Text style={styles.gotoText}>Logout</Text> */}
+      {/* </Pressable> */}
     </View>
   )
 }
@@ -38,4 +55,16 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 99
   },
+  gotoBtn: {
+    padding:14,
+    marginTop:100,
+    backgroundColor:Colors.PRIMARY,
+    width:'25%',
+    borderRadius:14,
+  },
+  gotoText: {
+    fontFamily: 'roboto-medium',
+    fontSize:12,
+    textAlign:'center',
+  }
 })
