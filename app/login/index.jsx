@@ -1,5 +1,5 @@
 import { View, Text, Image, StyleSheet, Pressable, Button } from 'react-native'
-import React, { useCallback } from 'react'
+import React from 'react'
 import Colors from './../../constants/Colors'
 import * as WebBrowser from 'expo-web-browser'
 import { useOAuth } from '@clerk/clerk-expo'
