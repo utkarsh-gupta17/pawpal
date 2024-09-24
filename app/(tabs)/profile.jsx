@@ -5,14 +5,15 @@ import { useAuth, useUser } from '@clerk/clerk-expo'
 import { useRouter } from 'expo-router'
 import Colors from '../../constants/Colors'
 
-const Profile = () => {
+export default function Profile(){
 
   const {user} = useUser();
   const router = useRouter();
   const {signOut} = useAuth();
   const onPressMenu = (menu) => {
-      if(menu == 'logout'){
-          signOut();
+      if(menu.id == 5){
+          console.log("Going Out");
+          signOut({redirectUrl:'/pawpal/app/index.jsx'});
           return;
       }
       router.push(menu.path)
@@ -79,8 +80,6 @@ const Profile = () => {
     </View>
   )
 }
-
-export default Profile;
 
 const styles = StyleSheet.create({
   flatlist: {

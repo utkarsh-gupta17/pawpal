@@ -24,7 +24,7 @@ export default function LoginScreen() {
 
   const { startOAuthFlow } = useOAuth({ strategy: 'oauth_google' });
 
-  const onPress = React.useCallback(async () => {
+  const onPress = async () => {
 
     console.log('Button Pressed');
 
@@ -40,7 +40,7 @@ export default function LoginScreen() {
     } catch (err) {
       console.error('OAuth error', err)
     }
-  }, []);
+  };
 
 
 
